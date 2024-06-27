@@ -1,7 +1,14 @@
+wheel==0.43.0
 datasets
 loralib
 sentencepiece
-git+https://github.com/huggingface/transformers.git
+transformers
 accelerate
 bitsandbytes
-git+https://github.com/huggingface/peft.git
+peft
+einops==0.6.1
+evaluate==0.4.0
+scikit-learn==1.2.2
+wandb==0.15.3
+nltk
+packaging

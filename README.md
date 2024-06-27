@@ -21,20 +21,46 @@ https://huggingface.co/cosimoiaia/Loquace-12B   -   Based on pythia-12B
 
 https://huggingface.co/cosimoiaia/Loquace-20B   -   Based on gpt-neox-20B
 
-## 🏋️ Reproduce the training 
-To replicate the results using the Loquace dataset, use the code in this repo, install the requirements and run the training:
+## Project Installation
 
-Install the PyThorch version for your system
-```
-pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
-```
+### Prerequisites
 
-Install the dependencies
+Make sure you have CUDA installed if you have an NVIDIA GPU. You can download CUDA from the NVIDIA website: [NVIDIA CUDA Toolkit](https://developer.nvidia.com/cuda-downloads).
+
+### CUDA Configuration (Windows Only)
+
+1. Find the CUDA installation directory. It is usually located at `C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\vX.X`, where `X.X` represents the installed version of CUDA.
+2. Open CMD ad an Administrator and set the `CUDA_HOME` environment variable:
+   ```
+   setx CUDA_HOME "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\vX.X" /m
+   ```
+
+3. Add CUDA to the `PATH`:
+   Open PowerShell as an Administrator and run the following command:
+   ```
+   [System.Environment]::SetEnvironmentVariable("Path", $env:Path + ";C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\vX.X\bin;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\vX.X\libnvvp", [System.EnvironmentVariableTarget]::Machine)
+
+   ```
+
+### Install the dependencies
+
 ```
+pip install torch==2.3.0 torchvision==0.18.0 torchaudio==2.3.0 --index-url https://download.pytorch.org/whl/cu121
 pip install -U -r requirements.txt
 ```
+Next, install unsloth, I created a fork that is windows compatible:
+```
+pip install "unsloth[cu121-ampere-torch230] @ git+https://github.com/LucaCatone/unsloth-windows.git"
+```
+Or if you are on linux
+```
+pip install "unsloth[cu121-ampere-torch230] @ git+https://github.com/unslothai/unsloth.git"
+```
 
-Start the finetune by running this command
+
+## 🏋️ Reproduce the training 
+To replicate the results using the Loquace dataset:
+
 ```
 python3 qlora.py \
     --model_name_or_path model_path \

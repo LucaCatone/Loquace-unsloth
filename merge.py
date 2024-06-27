@@ -1,4 +1,5 @@
-from transformers import AutoModelForCausalLM, AutoTokenizer
+from transformers import AutoTokenizer
+from unsloth import FastLanguageModel
 from peft import PeftModel
 import torch
 
@@ -24,7 +25,7 @@ def main():
         device_arg = { 'device_map': { "": args.device} }
 
     print(f"Loading base model: {args.base_model_name_or_path}")
-    base_model = AutoModelForCausalLM.from_pretrained(
+    base_model = FastLanguageModel.from_pretrained(
         args.base_model_name_or_path,
         return_dict=True,
         torch_dtype=torch.float16,

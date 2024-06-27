@@ -20,17 +20,17 @@ from torch.nn.utils.rnn import pad_sequence
 import argparse
 from transformers import (
     AutoTokenizer, 
-    AutoModelForCausalLM, 
     set_seed, 
     Seq2SeqTrainer,
     BitsAndBytesConfig
 )
+from unsloth import FastLanguageModel
 from datasets import load_dataset
 import evaluate
 import nltk
 
 from peft import (
-    prepare_model_for_int8_training,
+    prepare_model_for_kbit_training,
     LoraConfig,
     get_peft_model,
     get_peft_model_state_dict,
@@ -54,7 +54,7 @@ class ModelArguments:
     )
     trust_remote_code: Optional[bool] = field(
         default=False,
-        metadata={"help": "Enable unpickling of arbitrary code in AutoModelForCausalLM#from_pretrained."}
+        metadata={"help": "Enable unpickling of arbitrary code in FastLanguageModel#from_pretrained."}
     )
 
 @dataclass
@@ -260,7 +260,7 @@ def get_accelerate_model(args, checkpoint_dir):
 
     print(f'loading base model {args.model_name_or_path}...')
     compute_dtype = (torch.float16 if args.fp16 else (torch.bfloat16 if args.bf16 else torch.float32))
-    model = AutoModelForCausalLM.from_pretrained(
+    model = FastLanguageModel.from_pretrained(
         args.model_name_or_path,
         load_in_4bit=args.bits == 4,
         load_in_8bit=args.bits == 8,
@@ -292,7 +292,7 @@ def get_accelerate_model(args, checkpoint_dir):
     model.config.torch_dtype=(torch.float32 if args.fp16 else (torch.bfloat16 if args.bf16 else torch.float32))
 
     if not args.full_finetune:
-        model = prepare_model_for_int8_training(model, use_gradient_checkpointing=args.gradient_checkpointing)
+        model = prepare_model_for_kbit_training(model, use_gradient_checkpointing=args.gradient_checkpointing)
     if args.gradient_checkpointing:
         model.gradient_checkpointing_enable()
 
