@@ -23,12 +23,19 @@ https://huggingface.co/cosimoiaia/Loquace-20B   -   Based on gpt-neox-20B
 
 ## 🏋️ Reproduce the training 
 To replicate the results using the Loquace dataset, use the code in this repo, install the requirements and run the training:
-```
-pip install -U bitsandbytes
-pip install -U git+https://github.com/huggingface/transformers.git
-pip install -U git+https://github.com/huggingface/peft.git
-pip install -U git+https://github.com/huggingface/accelerate.git
 
+Install the PyThorch version for your system
+```
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+```
+
+Install the dependencies
+```
+pip install -U -r requirements.txt
+```
+
+Start the finetune by running this command
+```
 python3 qlora.py \
     --model_name_or_path model_path \
     --output_dir ./Loquace-XX \
