@@ -265,18 +265,8 @@ def get_accelerate_model(args, checkpoint_dir):
         load_in_4bit=args.bits == 4,
         load_in_8bit=args.bits == 8,
         device_map='auto',
-        max_memory=max_memory,
-        quantization_config=BitsAndBytesConfig(
-            load_in_4bit=args.bits == 4,
-            load_in_8bit=args.bits == 8,
-            llm_int8_threshold=6.0,
-            llm_int8_has_fp16_weight=False,
-            bnb_4bit_compute_dtype=compute_dtype,
-            bnb_4bit_use_double_quant=args.double_quant,
-            bnb_4bit_quant_type=args.quant_type # {'fp4', 'nf4'}
-        ),
-        torch_dtype=(torch.float32 if args.fp16 else (torch.bfloat16 if args.bf16 else torch.float32)),
-        trust_remote_code=args.trust_remote_code,
+        dtype=None,
+        max_memory=max_memory
     )
     if compute_dtype == torch.float16 and args.bits == 4:
         major, minor = torch.cuda.get_device_capability()

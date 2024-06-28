@@ -23,9 +23,18 @@ https://huggingface.co/cosimoiaia/Loquace-20B   -   Based on gpt-neox-20B
 
 ## Project Installation
 
-### Prerequisites
+## Requirements
 
-Make sure you have CUDA installed if you have an NVIDIA GPU. You can download CUDA from the NVIDIA website: [NVIDIA CUDA Toolkit](https://developer.nvidia.com/cuda-downloads).
+- Make sure you have CUDA installed if you have an NVIDIA GPU. You can download CUDA from the NVIDIA website: [NVIDIA CUDA Toolkit](https://developer.nvidia.com/cuda-downloads).
+- Python 3.11
+- Visual Studio 2022 build tools [^1^][1]
+
+### Installing Visual Studio 2022 Build Tools
+
+1. First, you must install the installer.
+2. Open Visual Studio installer and select 'Desktop Development with C++' under the "Workload" tab.
+3. Under the Individual Components Tab, search for these optional components if not automatically selected: "MSVC v143-VS 2022 C++ x64/x86 build tools, Windows 11 SDK, C++ CMake tools for windows, Testing tools core features-Build Tools, C++ AddressSanitizer".
+4. Hit install and close Visual Studio 2022.
 
 ### CUDA Configuration (Windows Only)
 
@@ -42,10 +51,31 @@ Make sure you have CUDA installed if you have an NVIDIA GPU. You can download CU
 
    ```
 
-### Install the dependencies
+### Installing Torch (CUDA)
 
 ```
 pip install torch==2.3.0 torchvision==0.18.0 torchaudio==2.3.0 --index-url https://download.pytorch.org/whl/cu121
+```
+
+### Installing Triton
+
+1. The first package you will need to install is Triton, as Deepspeed depends on it.
+2. In order to install Triton, you will need the Triton Libraries. Unzip the Triton libraries to your C drive like so 'C:\llvm-5e5a22ca-windows-x64'.
+3. Add The Bin and lib to your environment variables (same way you did when installing CUDA) so 'C:\llvm-5e5a22ca-windows-x64\bin' and 'C:\llvm-5e5a22ca-windows-x64\lib' to your system path inside the environment variables page.
+4. Now you may install the wheels. Download the wheels and run 
+    ```
+    pip install ./whls/triton-2.1.0-cp311-cp311-win_amd64.whl
+    ```
+
+### Installing Deepspeed
+
+```
+pip install ./whls/deepspeed-0.13.1+unknown-py3-none-any.whl
+```
+
+### Install the dependencies
+
+```
 pip install -U -r requirements.txt
 ```
 Next, install unsloth, I created a fork that is windows compatible:
